@@ -1,20 +1,15 @@
 #include <bits/stdc++.h>
-
+#include "headers/disk.h"
 
 //Directory:
 //Convert file_name into directory_entries
 
 
-// Disk Info
-#define DISK_CAPACITY 20
-char secondary_mem[DISK_CAPACITY];
-void write_onDisk(int mem_address , char *file);
-void read_fromDisk(int mem_address);
-void print_DiskStatus();
+
 
 
 // File 
-char file_1[] = "abaa";
+char file1[] = "abaa";
 
 // RAM
 #define RAM_CAPACITY 5
@@ -28,17 +23,14 @@ void print_ComputerStatus();
 
 // Directory
 #define MaxFileNUMBER
-typedef _DirectoryTable {
+typedef struct _DirectoryTable {
 	int idFiles[MaxFileNUMBER];
 	char pathFiles[MaxFileNUMBER][50];
-
-
 } DirectoryTable;
 
-typedef _FileDescriptorTable {
+typedef struct _FileDescriptorTable {
 	int idFiles[MaxFileNUMBER];
 	int addressFiles[MaxFileNUMBER];
-
 
 } FileDescriptorTable;
 
@@ -52,12 +44,12 @@ int main (void){
 
 
     //Print file
-   	printf("%s\n", file_1);
+   	printf("%s\n", file1);
    	// Print Disk
    	print_ComputerStatus();
     // Write on Disk
-    write_onDisk(fileDescriptorTable.addressFiles[0], file_1);
-    write_onRAM(1,file_1);
+    write_onDisk(fileDescriptorTable.addressFiles[0], file1);
+    //write_onRAM(1,file1);
     // Print (after Copy)
     print_ComputerStatus();
 
@@ -90,15 +82,11 @@ void print_ComputerStatus(){
 }
 
 
-void write_onDisk(int mem_address, char *file) {
-	for (int i = 0; i < strlen(file); ++i) {
-		secondary_mem[i+mem_address] = file[i];
-	}
-}
+
 
 void write_onRAM(int mem_address , int idFile) {
-	for (int i = 0; i < strlen(file); ++i) {
-		primary_mem[i+mem_address] = file[i];
+	for (int i = 0; i < strlen(file1); ++i) {
+		primary_mem[i+mem_address] = file1[i];
 	}
 }
 
