@@ -9,30 +9,36 @@
 
 
 
-
 // File 
 char file1[] = "abaa";
 
 
 
 
-// Directory
-#define MaxFileNUMBER
-typedef struct _DirectoryTable {
-	int idFiles[MaxFileNUMBER];
-	char pathFiles[MaxFileNUMBER][50];
-} DirectoryTable;
 
-typedef struct _FileDescriptorTable {
-	int idFiles[MaxFileNUMBER];
-	int addressFiles[MaxFileNUMBER];
+// Directory Table
+#define MAX_FILE_NUMBER 5
+typedef struct _DirectoryTuple {
+    char path_file[50];
+    int id_file;
+} DirectoryTuple
 
+
+
+//File Descriptor Table
+typedef struct _FileDescriptorTuple {
+    int id_file;
+    int address_file;
 } FileDescriptorTable;
 
 
 int main (void){
 	// Init Enviroment
-    FileDescriptorTable fileDescriptorTable;
+    DirectoryTuple directory_table[MAX_FILE_NUMBER];
+    FileDescriptorTuple file_descriptor_table[MAX_FILE_NUMBER];
+    
+    
+    
 
     fileDescriptorTable.idFiles[0] = 0;
     fileDescriptorTable.addressFiles[0] = 4;
