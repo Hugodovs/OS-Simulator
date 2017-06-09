@@ -36,10 +36,20 @@ int main (void){
 	// Init Enviroment
     DirectoryTuple directory_table[MAX_FILE_NUMBER];
     FileDescriptorTuple file_descriptor_table[MAX_FILE_NUMBER];
+    // File
     
-    
-    
+    //Write File On Disk:
+    //checkDisk se file cabe
+    //Coloca o arquivo no endereço físico do Disco
+    //Pega o endereço e cria um id (adiciona no file descriptor table)
+    //Pega o path(string) e o id do file descriptor table(adiciona no directory table)
 
+    //Printa o Disk
+
+        
+
+
+    
     fileDescriptorTable.idFiles[0] = 0;
     fileDescriptorTable.addressFiles[0] = 4;
 
