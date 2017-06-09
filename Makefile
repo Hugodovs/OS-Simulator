@@ -1,5 +1,2 @@
-CC=g++
-CFLAGS=-I.
-
-mainmake: hellomake.o hellofunc.o
-     $(CC) -o hellomake hellomake.o hellofunc.o -I.
+compila: main.cpp src/disk.cpp src/ram.cpp src/screen.cpp
+	g++ -o SO main.cpp src/disk.cpp src/ram.cpp src/screen.cpp
