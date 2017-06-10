@@ -58,3 +58,14 @@ void read_fromDisk(char *requestedfile, char requestedfile_content[100]) {
     requestedfile_content[file_address_and_size[1]] = '\0';
     
 }
+
+void delete_fromDisk(char *file){
+    int id_reqfile = find_file_id(file);
+    int file_address_and_size[2];
+    get_address_size_from_id(id_reqfile, file_address_and_size);
+
+    for (int i = file_address_and_size[0]; i < file_address_and_size[0] + file_address_and_size[1]; i++) {
+        secondary_mem[i] = '\0';   
+    }
+
+}
