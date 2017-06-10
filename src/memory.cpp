@@ -1,4 +1,4 @@
-#include "../headers/disk.h"
+#include "../headers/memory.h"
 #include "../headers/descriptor_table.h"
 #include "../headers/directory_table.h"
 #include <string.h>

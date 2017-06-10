@@ -1,8 +1,7 @@
-
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "headers/disk.h"
+#include "headers/memory.h"
 #include "headers/screen.h"
 #include "headers/directory_table.h"
 #include "headers/descriptor_table.h"
