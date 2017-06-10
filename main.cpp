@@ -6,12 +6,7 @@
 #include "headers/directory_table.h"
 #include "headers/descriptor_table.h"
 
-
-//Directory:
-//Convert file_name into directory_entries
-
-
-// File
+// Files
 char file1[] = "hugo";
 //char file2[] = "joao_burro";
 
@@ -23,23 +18,33 @@ int main (void){
 
     print_ComputerStatus();
     
+    switch:
+
+        - open file.txt
+
+        - write aiueahiueahea in int(adress)
+
+        - read int(adress) int(size)
+
+        - close int(andress_init) 
 
     //Print file
    	//printf("%s\n", file1);
    	write_onDisk(file1, "file1.txt");  // precisa de if aqui... com o int retornado
-   	
+   	//read_fromDisk("file1.txt", fileOut);
+    //delete_fromDisk("file1.txt");
     //write_onDisk(file2, "file2.txt");
     print_ComputerStatus();
 
-    //open_fromDisk("file.txt");
-
+    open_file("file1.txt");
+    print_ComputerStatus();
     //char fileOut[100]; 
-    //read_fromDisk("file1.txt", fileOut);
+    
     //printf("\nFileOut: %s\n", fileOut);
     //read_fromDisk("file2.txt", fileOut);
 	//printf("\nFileOut: %s\n", fileOut);
 
-    //delete_fromDisk("file1.txt");
+    
 
     // Print (after Copy)
     //print_ComputerStatus();
