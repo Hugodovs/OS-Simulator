@@ -1,17 +1,31 @@
 #include "../headers/disk.h"
+#include "../headers/descriptor_table.h"
+#include "../headers/directory_table.h"
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 
 char secondary_mem[DISK_CAPACITY];
 
 
 
-void write_onDisk(int mem_address, char *file) {
-	printf("Escrevendo arquivo na posicao: %d...\n", mem_address);
-	for (unsigned int i = 0; i < strlen(file); ++i) {
-		secondary_mem[i+mem_address] = file[i];
-	}
+int write_onDisk(char *file, char *fileName) {
+
+    printf("Tentando escrever um arquivo");
+        
+    int mem_address = check_free_disk(strlen(file));
+    if (mem_address == -1)
+        return mem_address;
+    else {
+        for (unsigned int i = 0; i < strlen(file); ++i) {
+            secondary_mem[i+mem_address] = file[i];
+        }
+        int fd = generate_fd(); //cria um filedescriptor para o file
+        insert_tuple_descrip_table(fd, mem_address, strlen(file));
+        insert_tuple_direct_table(fd, fileName);
+        return 1;
+    }
 }
 
 
@@ -30,4 +44,17 @@ int check_free_disk(int size) {
 
     }
     return index;
+}
+
+
+void read_fromDisk(char *requestedfile, char requestedfile_content[100]) {
+    int id_reqfile = find_file_id(requestedfile);
+    int file_address_and_size[2];
+    get_address_size_from_id(id_reqfile, file_address_and_size);
+    
+    for (int i = 0; i < file_address_and_size[1]; i++) {
+        requestedfile_content[i] = secondary_mem[file_address_and_size[0]+i];   
+    }
+    requestedfile_content[file_address_and_size[1]] = '\0';
+    
 }

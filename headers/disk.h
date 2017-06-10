@@ -6,6 +6,6 @@
 
 extern char secondary_mem[DISK_CAPACITY];
 
-void write_onDisk(int mem_address , char *file);
-void read_fromDisk(int mem_address);
+int write_onDisk(char *file, char *fileName);
+void read_fromDisk(char *requestedfile, char requestedfile_content[100]);
 int check_free_disk(int tam);

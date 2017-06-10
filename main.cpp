@@ -14,8 +14,8 @@
 
 
 // File
-char file1[] = "abaa";
-
+char file1[] = "hugo";
+char file2[] = "joao_burro";
 // Directory Table
 
 
@@ -29,19 +29,7 @@ int main (void){
 
     //Write File On Disk:
     //checkDisk se file cabe
-    
-
-    int initial_pos_free_space = check_free_disk(3);
-    if (initial_pos_free_space == -1)
-        printf("Sem espaco suficiente no disco. Chola\n");
-    else {
-        write_onDisk(initial_pos_free_space, file1); //Coloca o arquivo no endereço físico do Disco
-        int fd = generate_fd(); //cria um filedescriptor para o file
-        insert_tuple_descrip_table(fd, initial_pos_free_space, strlen(file1));
-        //print_descriptor_table(); se quiser ver a descriptor table... só descomentar...
-        insert_tuple_direct_table(fd, "file1.txt");
-        print_directory_table(); //se quiser ver a directory table... só descomentar...
-    }
+	
 
     //Pega o path(string) e o id do file descriptor table(adiciona no directory table)
 
@@ -51,9 +39,15 @@ int main (void){
    	printf("%s\n", file1);
    	// Print Disk
    	print_ComputerStatus();
-    // Write on Disk
-   // write_onDisk(fileDescriptorTable.addressFiles[0], file1);
-    //write_onRAM(1,file1);
+    write_onDisk(file1, "file1.txt");  // precisa de if aqui... com o int retornado
+   	write_onDisk(file2, "file2.txt");
+
+    char fileOut[100]; 
+    read_fromDisk("file1.txt", fileOut);
+    printf("\nFileOut: %s\n", fileOut);
+    read_fromDisk("file2.txt", fileOut);
+	printf("\nFileOut: %s\n", fileOut);
+
     // Print (after Copy)
     print_ComputerStatus();
 
