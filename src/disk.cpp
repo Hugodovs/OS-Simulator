@@ -8,6 +8,7 @@ char secondary_mem[DISK_CAPACITY];
 
 
 void write_onDisk(int mem_address, char *file) {
+	printf("Escrevendo arquivo na posicao: %d...\n", mem_address);
 	for (int i = 0; i < strlen(file); ++i) {
 		secondary_mem[i+mem_address] = file[i];
 	}
@@ -15,7 +16,7 @@ void write_onDisk(int mem_address, char *file) {
 
 
 int check_free_disk(int size) {
-    
+
     int index = -1;
     int empty_spaces;
     for (int i = 0; i <= DISK_CAPACITY - size; i++) {
@@ -26,7 +27,7 @@ int check_free_disk(int size) {
                 else if (++empty_spaces == size) return i;
             }
         }
-            
+
     }
     return index;
 }

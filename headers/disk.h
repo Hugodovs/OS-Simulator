@@ -7,5 +7,5 @@
 extern char secondary_mem[DISK_CAPACITY];
 
 void write_onDisk(int mem_address , char *file);
-int check_free_disk(int size);
 void read_fromDisk(int mem_address);
+int check_free_disk(int tam);
