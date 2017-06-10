@@ -7,7 +7,7 @@
 
 
 char secondary_mem[DISK_CAPACITY];
-
+char primary_mem[RAM_CAPACITY];
 
 
 int write_onDisk(char *file, char *fileName) {

@@ -1,4 +1,3 @@
-#include "../headers/ram.h"
 #include "../headers/disk.h"
 #include "../headers/directory_table.h"
 #include "../headers/descriptor_table.h"
