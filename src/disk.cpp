@@ -9,7 +9,7 @@ char secondary_mem[DISK_CAPACITY];
 
 void write_onDisk(int mem_address, char *file) {
 	printf("Escrevendo arquivo na posicao: %d...\n", mem_address);
-	for (int i = 0; i < strlen(file); ++i) {
+	for (unsigned int i = 0; i < strlen(file); ++i) {
 		secondary_mem[i+mem_address] = file[i];
 	}
 }

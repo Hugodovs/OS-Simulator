@@ -1,4 +1,7 @@
-#include <bits/stdc++.h>
+
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "headers/disk.h"
 #include "headers/ram.h"
 #include "headers/screen.h"
@@ -26,6 +29,8 @@ int main (void){
 
     //Write File On Disk:
     //checkDisk se file cabe
+    
+
     int initial_pos_free_space = check_free_disk(3);
     if (initial_pos_free_space == -1)
         printf("Sem espaco suficiente no disco. Chola\n");

@@ -16,9 +16,3 @@ void insert_tuple_descrip_table(int fd, int index, int size) {
     tuple.address_file = index;
     file_descriptor_table[fd] = tuple;
 }
-
-void print_descriptor_table() {
-    for (int i = 0; i < MAX_FILE_NUMBER; i++)
-        printf("(ID:%d, size:%d, address:%d)\n", file_descriptor_table[i].id_file, file_descriptor_table[i].size,
-    file_descriptor_table[i].address_file);
-}

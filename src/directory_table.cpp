@@ -22,8 +22,3 @@ void insert_tuple_direct_table(int id_file, char* filename) {
 }
 
 
-void print_directory_table() {
-    for(int i = 0; i < MAX_FILE_NUMBER; i++) {
-        printf("(Filename: %s, ID: %d)\n", directory_table[i].filename, directory_table[i].id_file);
-    }
-}

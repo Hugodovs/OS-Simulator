@@ -7,7 +7,7 @@ typedef struct _FileDescriptorTuple {
     int size;
 } FileDescriptorTuple;
 
-
+extern FileDescriptorTuple file_descriptor_table[MAX_FILE_NUMBER];
 
 
 int generate_fd();
