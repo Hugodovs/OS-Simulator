@@ -63,7 +63,7 @@ int check_free_disk(int size) {
 }
 
 
-void read_fromDisk(char *requestedfile, char requestedfile_content[100]) {
+int read_fromDisk(char *requestedfile, char requestedfile_content[100]) {
     printf("Attempting to locate requestedfile id on the directory_table\n");
     int id_reqfile = find_file_id(requestedfile);
     if(id_reqfile==-1)
@@ -83,6 +83,8 @@ void read_fromDisk(char *requestedfile, char requestedfile_content[100]) {
     printf("File content and address at the secondary_mem retrieved\n");
     requestedfile_content[file_address_and_size[1]] = '\0';
 
+    return file_address_and_size[1];
+
 }
 
 void delete_fromDisk(char *file){
@@ -101,13 +103,13 @@ void delete_fromDisk(char *file){
 void open_file(char* file_name, char* mode){
     //DMA:
     //Vai no HD e pega o conteúdo desse arquivo:
-    char file_content[15];
-    read_fromDisk(file_name, file_content);
+    char file_content[30];
+    int file_size = read_fromDisk(file_name, file_content);
     //Vê se tem espaço na RAM pra colocar esse arquivo:
     //Se tiver, coloca o arquivo na ram
     int ram_file_address = write_on_ram(file_content);
 
-    insert_tuple_file_ram_table(file_name, mode, ram_file_address);
+    insert_tuple_file_ram_table(file_name, mode, ram_file_address, file_size);
 
 }
 
@@ -137,7 +139,30 @@ int write_on_file(char* file_name, char* input) {
     print_ram_table();
   }
 
+  files_ram_table[file_id].file_size = files_ram_table[file_id].file_ptr;
+
   return 1;
+
+}
+
+//copia o arquivo da memoria RAM para o HD e apaga da RAM
+void close_file(char* file_name) {
+  int file_id = find_file_id(file_name);
+  int ram_file_address = files_ram_table[file_id].ram_file_address;
+  int file_hd_address_size[2];
+  get_address_size_from_id(file_id, file_hd_address_size);
+  int file_ram_size = files_ram_table[file_id].file_size;
+
+  int a = file_hd_address_size[0];
+  int b = ram_file_address;
+
+  int aux;
+  for (int i = 0; i < file_ram_size; i++) {
+    aux = primary_mem[b];
+    primary_mem[b++] = ' ';
+    secondary_mem[a++] = aux;
+  }
+
 
 }
 
@@ -161,6 +186,13 @@ int write_on_ram(char* file_content) {
 }
 
 void print_disk() {
+  puts("\n---------DISK STATUS-------\n");
   for (int i = 0; i < DISK_CAPACITY; i++)
+    printf("[%c] ", secondary_mem[i]);
+}
+
+void print_ram() {
+  puts("\n---------RAM STATUS-------\n");
+  for (int i = 0; i < RAM_CAPACITY; i++)
     printf("[%c] ", primary_mem[i]);
 }

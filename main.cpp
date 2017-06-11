@@ -69,6 +69,9 @@ int main (void){
     open_file("file1.txt", "w");
     write_on_file("file1.txt", "joao");
     write_on_file("file1.txt", "mateus");
+    close_file("file1.txt");
+    print_disk();
+    print_ram();
     update_screen();
     //while(1);
     // Print (after Copy)
