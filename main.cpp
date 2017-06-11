@@ -5,6 +5,7 @@
 #include "headers/screen.h"
 #include "headers/directory_table.h"
 #include "headers/descriptor_table.h"
+#include "headers/workflow.h"
 
 
 // Files
@@ -20,6 +21,7 @@ int main (void){
 
     update_screen();
 
+    
     //print_ComputerStatus();
 
     //Print file
