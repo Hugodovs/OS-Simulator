@@ -59,13 +59,23 @@ int check_free_disk(int size) {
 
 
 void read_fromDisk(char *requestedfile, char requestedfile_content[100]) {
+    printf("Attempting to locate requestedfile id on the directory_table\n");
     int id_reqfile = find_file_id(requestedfile);
-    int file_address_and_size[2];
-    get_address_size_from_id(id_reqfile, file_address_and_size);
+    if(id_reqfile==-1)
+        printf("Failed to located requestedfile id on the directory_table\n");
+    else
+        printf("Found requestedfile id (%d) on the directory_table\n", id_reqfile);
     
+    int file_address_and_size[2];
+
+    printf("Attempting to get address size from the id (%d)\n", id_reqfile);
+    get_address_size_from_id(id_reqfile, file_address_and_size);
+    printf("Found address size from the id (%d)\n", id_reqfile);
+        
     for (int i = 0; i < file_address_and_size[1]; i++) {
         requestedfile_content[i] = secondary_mem[file_address_and_size[0]+i];   
     }
+    printf("File content and address at the secondary_mem retrieved\n");
     requestedfile_content[file_address_and_size[1]] = '\0';
     
 }
@@ -112,13 +122,17 @@ int check_free_ram(int size) {
 int write_on_ram(char* file_content){
     //printf("Tentando escrever um arquivo na RAM!\n\n\n");
         
+    printf("Locating free space at the RAM.\n");    
     int adress_on_ram = check_free_ram(strlen(file_content));
-    if (adress_on_ram == -1)
+    if (adress_on_ram == -1) {
+        printf("There isn't enough space at the RAM.\n");
         return adress_on_ram;
+    }
     else {
         for (unsigned int i = 0; i < strlen(file_content); ++i) {
             primary_mem[i+adress_on_ram] = file_content[i];
         }
+        printf("File content copied to the RAM.\n");
         return 1;
     }
     //printf("ERROR in write_on_ram");

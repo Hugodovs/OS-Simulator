@@ -15,17 +15,14 @@ char file1[] = "hugo";
 
 int main (void){
 	// Init Enviroment
+	/*
     init_screen();
     init_disk();
     init_ram();
+    update_screen(); */
 
-    update_screen();
-
-
-
-
-
-    
+    write_onDisk(file1, "file1.txt");
+	open_file("file1.txt");    
     //print_ComputerStatus();
 
     //Print file
@@ -44,7 +41,6 @@ int main (void){
     //printf("\nFileOut: %s\n", fileOut);
     //read_fromDisk("file2.txt", fileOut);
 	//printf("\nFileOut: %s\n", fileOut);
-    while(1);
     
 
     // Print (after Copy)
