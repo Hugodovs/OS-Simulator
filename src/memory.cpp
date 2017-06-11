@@ -9,10 +9,21 @@
 char secondary_mem[DISK_CAPACITY];
 char primary_mem[RAM_CAPACITY];
 
+void init_disk(){
+    for(unsigned int i = 0; i < DISK_CAPACITY; i++){
+        secondary_mem[i] = ' ';
+    }
+}
+
+void init_ram(){
+    for(unsigned int i = 0; i < RAM_CAPACITY; i++){
+        primary_mem[i] = ' ';
+    }
+}
 
 int write_onDisk(char *file, char *fileName) {
 
-    printf("Tentando escrever um arquivo no disk!");
+    //printf("Tentando escrever um arquivo no disk!");
         
     int mem_address = check_free_disk(strlen(file));
     if (mem_address == -1)
@@ -71,7 +82,6 @@ void delete_fromDisk(char *file){
 }
 
 void open_file(char* file_name){
-    printf("ae1\n\n\n\n");
     //DMA:
     //Vai no HD e pega o conteúdo desse arquivo:
     char file_content[100];
@@ -100,7 +110,7 @@ int check_free_ram(int size) {
 }
 
 int write_on_ram(char* file_content){
-    printf("Tentando escrever um arquivo na RAM!\n\n\n");
+    //printf("Tentando escrever um arquivo na RAM!\n\n\n");
         
     int adress_on_ram = check_free_ram(strlen(file_content));
     if (adress_on_ram == -1)
@@ -111,5 +121,5 @@ int write_on_ram(char* file_content){
         }
         return 1;
     }
-    printf("ERROR in write_on_ram");
+    //printf("ERROR in write_on_ram");
 }
