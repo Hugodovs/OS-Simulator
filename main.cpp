@@ -21,6 +21,10 @@ int main (void){
 
     update_screen();
 
+
+
+
+
     
     //print_ComputerStatus();
 
