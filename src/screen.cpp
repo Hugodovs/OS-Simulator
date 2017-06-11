@@ -5,103 +5,170 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <cstdlib>
+#include <unistd.h>
 
 //120 col 30 row
-#define SCREEN_SIZE 6120
-#define ROW_NUMBER 51
+#define SCREEN_SIZE 4800
+#define ROW_NUMBER 40
 #define COL_NUMBER 120
 
-//Static Text on Screen:
-const char text_computer_specs[27] 	= "COMPUTER STATS AND OPTIONS";
-const char text_file_table[11] 		= "FILE TABLE";
-const char text_ram[4] 				= "RAM";
-const char text_hard_drive[11]		= "HARD DRIVE";
-const char text_id[3] 				= "ID";
-const char text_adress[8] 			= "ADDRESS";
-const char text_path[5] 			= "PATH";
-const char text_log[4] 				= "LOG";
-const char text_input[6] 			= "INPUT";
+char screen_buffer[4801] = "+======================================================================================================================+"
+							"|         COMPUTER SPECS                                                                                               |"
+							"|                                                                                                                      |"
+							"|                                                                                                                      |"
+							"|                                                                                                                      |"
+							"|                                                                                                                      |"
+							"|                                                                                                                      |"
+							"+======================================================================================================================+"
+							"|                                         |                        |                                                   |"
+							"|             FILE TABLE                  |       RAM MEMORY       |             HARD DRIVE MEMORY                     |"
+							"|                                         |                        |                                                   |"
+							"|  ID          ADDRESS         PATH       | 0: [   ]     10: [   ] |    0: [   ]  10: [   ]  20: [   ]  30 [   ]       |"
+							"| +===+        +====+      +============+ | 1: [   ]     11: [   ] |    1: [   ]  11: [   ]  21: [   ]  31 [   ]       |"
+							"| |   |        |    |      |            | | 2: [   ]     12: [   ] |    2: [   ]  12: [   ]  22: [   ]  32 [   ]       |"
+							"| |===+        +====+      +============+ | 3: [   ]     13: [   ] |    3: [   ]  13: [   ]  23: [   ]  33 [   ]       |"
+							"| |   |        |    |      |            | | 4: [   ]     14: [   ] |    4: [   ]  14: [   ]  24: [   ]  34 [   ]       |"
+							"| |===+        +====+      +============+ | 5: [   ]     15: [   ] |    5: [   ]  15: [   ]  25: [   ]  35 [   ]       |"
+							"| |   |        |    |      |            | | 6: [   ]     16: [   ] |    6: [   ]  16: [   ]  26: [   ]  36 [   ]       |"
+							"| |===+        +====+      +============+ | 7: [   ]     17: [   ] |    7: [   ]  17: [   ]  27: [   ]  37 [   ]       |"
+							"| |   |        |    |      |            | | 8: [   ]     18: [   ] |    8: [   ]  18: [   ]  28: [   ]  38 [   ]       |"
+							"| +===+        +====+      +============+ | 9: [   ]     19: [   ] |    9: [   ]  19: [   ]  29: [   ]  39 [   ]       |"
+							"| |   |        |    |      |            | |                        |                                                   |"
+							"| +===+        +====+      +============+ +========================+===================================================+"
+							"| |   |        |    |      |            | |                                                                            |"
+							"| +===+        +====+      +============+ |                                   LOG                                      |"
+							"| |   |        |    |      |            | | +========================================================================+ |"
+							"| +===+        +====+      +============+ | | >>>                                                                    | |"
+							"| |   |        |    |      |            | | | >>>                                                                    | |"
+							"| +===+        +====+      +============+ | | >>>                                                                    | |"
+							"| |   |        |    |      |            | | | >>>                                                                    | |"
+							"| +===+        +====+      +============+ | | >>>                                                                    | |"
+							"| |   |        |    |      |            | | | >>>                                                                    | |"
+							"| +===+        +====+      +============+ | | >>>                                                                    | |"
+							"|                                         | +========================================================================+ |"
+							"|                                         | | >>>                                                                    | |"
+							"|                                         | +========================================================================+ |"
+							"|                                         |                                                                            |"
+							"+======================================================================================================================+"
+							"|  INPUT: >>>                                                                                                          |"
+							"+======================================================================================================================+";
 
-char screen_buffer[SCREEN_SIZE];
+//Buffers:
+char file_table_id_buffer[9];
+char file_table_address_buffer[20];
+char file_table_path_buffer[100];
+char ram_memory_buffer[20];
+char hard_drive_buffer[40];
+char log_buffer[528]; //66 per line
 
-void put_divisors_on_screen();
+void restart_file_table_id_buffer(){
+	for(int i = 0; i < 9; i++){
+		file_table_id_buffer[i] = '_';
+	}
+}
+
+void restart_file_table_address_buffer(){
+	for(int i = 0; i < 20; i++){
+		file_table_id_buffer[i] = '_';
+	}
+}
+
+void restart_file_table_path_buffer(){
+	for(int i = 0; i < 100; i++){
+		file_table_id_buffer[i] = '.';
+	}	
+}
+
+void restart_ram_memory_buffer(){
+	for(int i = 0; i < 20; i++){
+		file_table_id_buffer[i] = '_';
+	}	
+}
+
+void restart_hard_drive_buffer(){
+	for(int i = 0; i < 40; i++){
+		file_table_id_buffer[i] = '_';
+	}	
+}
+
+void restart_log_buffer(){
+	for(int i = 0; i < 528; i++){
+		file_table_id_buffer[i] = '_';
+	}	
+}
 
 void init_screen()
 {
 	#ifdef WINDOWS
-	    std::system("MODE 51, 120");
+	    std::system("MODE 40, 120");
 	#else
-	    std::system("resize -s 51 120 >/dev/null");
+	    std::system("resize -s 40 120 >/dev/null");
 	#endif
 
-    for(unsigned int i = 0; i < SCREEN_SIZE; i++){
-		screen_buffer[i] = ' ';
-	}
-
-	put_divisors_on_screen();
-	//FILL COMPUTER SPECS BOX:
-	strncpy(screen_buffer+45+120, text_computer_specs, 26);
-
-	//FILL FILE TABLE BOX:
-	strncpy(screen_buffer+1335, text_file_table, 10);
-	strncpy(screen_buffer+1443, text_id, 2);
-	strncpy(screen_buffer+1446+10, text_adress, 7);
-	strncpy(screen_buffer+1454+20, text_path, 4);
-
-	//FILL RAM BOM:
-	strncpy(screen_buffer+1372, text_ram, 3);
-
-	//FILL HARD DRIVE BOX:
-	strncpy(screen_buffer+1411, text_hard_drive, 10);
-
-	//FILL LOG BOX:
-	strncpy(screen_buffer+4922, text_log, 3);
-
-	//FILL INPUT BOX:
-	strncpy(screen_buffer+6002-120, text_input, 5);
-
+	restart_file_table_id_buffer();
+	restart_file_table_address_buffer();
+	restart_file_table_path_buffer();
+	restart_ram_memory_buffer();
+	restart_hard_drive_buffer();
+	restart_log_buffer();
 }
 
-void put_divisors_on_screen(){
 
-	char text_divide_horizontal_screen[121];
-	for (unsigned int i = 0; i < COL_NUMBER; i++){
-		text_divide_horizontal_screen[i] = '_';
-	}
-	strncpy(screen_buffer+1080, text_divide_horizontal_screen, 120);
-	strncpy(screen_buffer+4680, text_divide_horizontal_screen, 120);
-	strncpy(screen_buffer+5162-120, text_divide_horizontal_screen, 118);
-	strncpy(screen_buffer+5762-120, text_divide_horizontal_screen, 118);
+void update_screen(){
+	#ifdef WINDOWS
+	    std::system("cls");
+	#else
+		std::system ("clear");
+	#endif
+	setbuf(stdout, NULL);
 
-	for (int i = 1335+28-120; i < 40*120; i+=120) {
-		screen_buffer[i] = '|';
-	}
-
-	for (int i = 1335+70-120; i < 40*120; i+=120) {
-		screen_buffer[i] = '|';
-	}
-
-	for (int i = 5762-600; i < 5762-600 + 5*120; i+=120) {
-		screen_buffer[i] = '|';
-	}
-
-	/*for (int i = 5762-600; i < 5762-120 + 4*120; i+=120) {
-		screen_buffer[i] = '|';
-	}*/
+	printf("%s", screen_buffer);
+	sleep(1);
 }
 
-void set_DiskStatus_on_buffer() {
-	for (int i = 1411+240; i < 1411+240 + DISK_CAPACITY*120; i+=120) {
-		screen_buffer[i] = '[';
-		screen_buffer[i+2] = ']';
+void update_file_table_id_buffer(){
+	for(int i = 0; i < 1; i++){
+		file_table_id_buffer[i] = directory_table[i].id_file;
 	}
 
 	int j = 0;
-	for (int i = 1411+240+1; i < 1411+240 + DISK_CAPACITY*120; i+=120) {
-		screen_buffer[i] = *(secondary_mem+j);
+	for(int i = 1685-120; i < 1685 + 120*1; i+=120){
+		screen_buffer[i] = file_table_id_buffer[j];
 		j++;
 	}
+}
 
+void update_file_table_address_buffer(){
+	for(int i = 0; i < MAX_FILE_NUMBER; i++){
+		file_table_id_buffer[i] = file_descriptor_table[i].address_file;
+	}
+}
+
+void update_file_table_path_buffer(){
+	for(int i = 0; i < MAX_FILE_NUMBER; i++){
+		for(int j = 0; j < 10; j++){
+			file_table_id_buffer[i] = *(directory_table[i].filename)+j;
+		}
+		
+	}	
+}
+
+void update_ram_memory_buffer(){
+	for (int i = 0; i <  RAM_CAPACITY; i++) {
+		ram_memory_buffer[i] = primary_mem[i];
+	}	
+}
+
+void update_hard_drive_buffer(){
+	for (int i = 0; i <  DISK_CAPACITY; i++) {
+		hard_drive_buffer[i] = secondary_mem[i];
+	}
+}
+
+void update_log_buffer(){
+	for(int i = 0; i < 528; i++){
+		file_table_id_buffer[i] = '_';
+	}	
 }
 
 
@@ -109,6 +176,58 @@ void set_DiskStatus_on_buffer() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*void update_log_buffer(char* log_line){
+	
+	//Fourth Line:
+	for (int i = 110; i < 220; i++) {
+		log_buffer[i-110] = log_buffer[i];
+	}
+	//Third Line:
+	for (int i = 220; i < 330; i++) {
+		log_buffer[i-110] = log_buffer[i];
+	}
+	//Second Line:
+	for (int i = 330; i < 440; i++) {
+		log_buffer[i-110] = log_buffer[i];
+	}
+
+	for (int i = 440; i < 550; i++) {
+		log_buffer[i-110] = log_buffer[i];
+	}
+	//First Line:
+	strcpy(log_buffer+440, log_line);
+
+	for (int i = 440+strlen(log_line); i < 550; i++) {
+		log_buffer[i] = ' ';
+	}
+
+}*/
+
+
+
+/*
 
 void set_RAMStatus_on_buffer() {
 	for (int i = 0; i < RAM_CAPACITY; ++i) {
@@ -132,21 +251,16 @@ void print_directory_table() {
 
 void print_descriptor_table() {
     for (int i = 0; i < MAX_FILE_NUMBER; i++){}
-        /*printf("(ID:%d, size:%d, address:%d)\n", file_descriptor_table[i].id_file, file_descriptor_table[i].size,
+        printf("(ID:%d, size:%d, address:%d)\n", file_descriptor_table[i].id_file, file_descriptor_table[i].size,
     }
-    file_descriptor_table[i].address_file);*/
+    ;
 }
 
-void update_screen(){
-	#ifdef WINDOWS
-	    std::system("cls");
-	#else
-		std::system ("clear");
-	#endif
-	setbuf(stdout, NULL);
+void set_log_buffer(){
+	int j = 0;
+	for (int i = 5042+121; i < 5042+121 + 5*120; i+=120) {
+		strncpy(screen_buffer+i, log_buffer+j, 110);
+		j += 110;
+	}
+}*/
 
-	//Put Disk:
-	set_DiskStatus_on_buffer();
-
-	printf("%s", screen_buffer);
-}

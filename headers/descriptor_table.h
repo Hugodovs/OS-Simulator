@@ -1,4 +1,4 @@
-#define MAX_FILE_NUMBER 5
+#define MAX_FILE_NUMBER 10
 
 typedef struct _FileDescriptorTuple {
     int id_file;

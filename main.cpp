@@ -15,14 +15,36 @@ char file1[] = "hugo";
 
 int main (void){
 	// Init Enviroment
-	/*
+	
     init_screen();
     init_disk();
     init_ram();
-    update_screen(); */
-
+    update_screen(); 
     write_onDisk(file1, "file1.txt");
-	open_file("file1.txt");    
+
+    //update_file_table_id_buffer();
+    update_screen(); 
+    /*update_log_buffer("Schulz eh um viadinho");
+    update_screen();
+
+    update_log_buffer("Joao tambem eh");
+    update_screen();
+
+    update_log_buffer("Eles foram dormir");
+    update_screen();
+
+    update_log_buffer("E me deixaram aqui");
+    update_screen();
+
+    update_log_buffer("Fazendo essa merda");
+    update_screen();
+
+    update_log_buffer("DE TRABALHO DE MERDA iuaheuiahea");
+    update_screen();*/
+    //update_log_buffer("asdasd");
+    //update_screen();
+    //write_onDisk(file1, "file1.txt");
+	//open_file("file1.txt");    
     //print_ComputerStatus();
 
     //Print file
@@ -42,7 +64,7 @@ int main (void){
     //read_fromDisk("file2.txt", fileOut);
 	//printf("\nFileOut: %s\n", fileOut);
     
-
+    while(1);
     // Print (after Copy)
     //print_ComputerStatus();
     return 0;
