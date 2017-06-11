@@ -13,6 +13,8 @@ void delete_fromDisk(char *file);
 
 //Ram:
 void init_ram();
-void open_file(char* file_name);
+void open_file(char* file_name, char* mode);
+int write_on_file(char* file_name, char* input);
 int check_free_ram(int size);
 int write_on_ram(char* file_content);
+void print_disk();

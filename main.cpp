@@ -5,9 +5,10 @@
 #include "headers/screen.h"
 #include "headers/directory_table.h"
 #include "headers/descriptor_table.h"
+#include "headers/ram_file_table.h"
 #include "headers/workflow.h"
 
-
+//teste
 // Files
 char file1[] = "hugo";
 //char file2[] = "joao_burro";
@@ -15,15 +16,16 @@ char file1[] = "hugo";
 
 int main (void){
 	// Init Enviroment
-	
+
     init_screen();
     init_disk();
     init_ram();
-    update_screen(); 
-    write_onDisk(file1, "file1.txt");
+    update_screen();
+
+    if (write_onDisk(file1, "file1.txt") == -1) puts("MErda no disco");
 
     //update_file_table_id_buffer();
-    update_screen(); 
+
     /*update_log_buffer("Schulz eh um viadinho");
     update_screen();
 
@@ -44,7 +46,7 @@ int main (void){
     //update_log_buffer("asdasd");
     //update_screen();
     //write_onDisk(file1, "file1.txt");
-	//open_file("file1.txt");    
+	//open_file("file1.txt");
     //print_ComputerStatus();
 
     //Print file
@@ -59,12 +61,16 @@ int main (void){
     //print_ComputerStatus();
     //clearScreen();
     //print_ComputerStatus();
-    //char fileOut[100]; 
+    //char fileOut[100];
     //printf("\nFileOut: %s\n", fileOut);
     //read_fromDisk("file2.txt", fileOut);
 	//printf("\nFileOut: %s\n", fileOut);
-    
-    while(1);
+
+    open_file("file1.txt", "w");
+    write_on_file("file1.txt", "joao");
+    write_on_file("file1.txt", "mateus");
+    update_screen();
+    //while(1);
     // Print (after Copy)
     //print_ComputerStatus();
     return 0;
