@@ -64,11 +64,10 @@ Comandos do usuário
 		Finalmente temos o aquivo fora do HD.
 
 	read ("file.txt") size
-
 		Pega o conteúdo do arquivo na ram e, printa.
 
 	close ("file.txt")
-		Faz uma requisição para a  controladora_DMA passar da RAM para o HD
+		Faz uma requisição para a  controladora_DMA tirar o arquivo da RAM.
 
 	write "string" in int(address):
 		Escreve um conjunto de caracteres no endereço e vai seguindo
