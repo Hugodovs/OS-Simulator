@@ -1,5 +1,6 @@
 #include "../headers/ram_file_table.h"
 #include "../headers/directory_table.h"
+#include "../headers/descriptor_table.h"
 #include "../headers/memory.h"
 #include <string.h>
 #include <stdio.h>
@@ -29,4 +30,18 @@ void print_ram_table() {
     puts("------------FIM DA LINHA----------\n");
   }
   return;
+}
+
+
+void delete_tuple_ram_table(int file_id) {
+  files_ram_table[file_id].file_id = -1;
+
+  inode_table[file_id].size = files_ram_table[file_id].file_size;
+  files_ram_table[file_id].file_size = 0;
+
+  files_ram_table[file_id].ram_file_address = -1;
+  files_ram_table[file_id].file_ptr = 0;
+
+
+
 }

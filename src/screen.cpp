@@ -76,25 +76,25 @@ void restart_file_table_address_buffer(){
 void restart_file_table_path_buffer(){
 	for(int i = 0; i < 100; i++){
 		file_table_id_buffer[i] = '.';
-	}	
+	}
 }
 
 void restart_ram_memory_buffer(){
 	for(int i = 0; i < 20; i++){
 		file_table_id_buffer[i] = '_';
-	}	
+	}
 }
 
 void restart_hard_drive_buffer(){
 	for(int i = 0; i < 40; i++){
 		file_table_id_buffer[i] = '_';
-	}	
+	}
 }
 
 void restart_log_buffer(){
 	for(int i = 0; i < 528; i++){
 		file_table_id_buffer[i] = '_';
-	}	
+	}
 }
 
 void init_screen()
@@ -140,7 +140,7 @@ void update_file_table_id_buffer(){
 
 void update_file_table_address_buffer(){
 	for(int i = 0; i < MAX_FILE_NUMBER; i++){
-		file_table_id_buffer[i] = file_descriptor_table[i].address_file;
+		file_table_id_buffer[i] = inode_table[i].address_file;
 	}
 }
 
@@ -149,14 +149,14 @@ void update_file_table_path_buffer(){
 		for(int j = 0; j < 10; j++){
 			file_table_id_buffer[i] = *(directory_table[i].filename)+j;
 		}
-		
-	}	
+
+	}
 }
 
 void update_ram_memory_buffer(){
 	for (int i = 0; i <  RAM_CAPACITY; i++) {
 		ram_memory_buffer[i] = primary_mem[i];
-	}	
+	}
 }
 
 void update_hard_drive_buffer(){
@@ -168,7 +168,7 @@ void update_hard_drive_buffer(){
 void update_log_buffer(){
 	for(int i = 0; i < 528; i++){
 		file_table_id_buffer[i] = '_';
-	}	
+	}
 }
 
 
@@ -199,7 +199,7 @@ void update_log_buffer(){
 
 
 /*void update_log_buffer(char* log_line){
-	
+
 	//Fourth Line:
 	for (int i = 110; i < 220; i++) {
 		log_buffer[i-110] = log_buffer[i];
@@ -239,7 +239,7 @@ void set_RAMStatus_on_buffer() {
 void print_ComputerStatus(){
 	//set_DiskStatus_on_buffer();
 	printf("%s", screen_buffer);
-	
+
 	sleep(1);
 }
 
@@ -263,4 +263,3 @@ void set_log_buffer(){
 		j += 110;
 	}
 }*/
-

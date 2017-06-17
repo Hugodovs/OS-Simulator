@@ -17,12 +17,12 @@ char file1[] = "hugo";
 int main (void){
 	// Init Enviroment
 
-    init_screen();
+    //init_screen();
     init_disk();
     init_ram();
-    update_screen();
+    /*update_screen();
 
-    if (write_onDisk(file1, "file1.txt") == -1) puts("MErda no disco");
+    if (write_onDisk(file1, "file1.txt") == -1) puts("MErda no disco");*/
 
     //update_file_table_id_buffer();
 
@@ -67,12 +67,20 @@ int main (void){
 	//printf("\nFileOut: %s\n", fileOut);
 
     open_file("file1.txt", "w");
-    write_on_file("file1.txt", "joao");
-    write_on_file("file1.txt", "mateus");
-    close_file("file1.txt");
+    open_file("file2.txt", "r");
+    write_on_file("file2.txt", "namoralvsf");
+    printf("size : %d\n", files_ram_table[1].file_size);
+    read_from_file("file2.txt", 3);
+    close_file("file2.txt");
+
+    delete_file("file2.txt");
+    print_inode_table();
+    //write_on_file("file1.txt", "joao");
+    //write_on_file("file1.txt", "mateus");
+    //close_file("file1.txt");
     print_disk();
     print_ram();
-    update_screen();
+    //update_screen();
     //while(1);
     // Print (after Copy)
     //print_ComputerStatus();

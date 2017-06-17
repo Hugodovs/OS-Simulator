@@ -13,4 +13,5 @@ extern FILE_RAM_TUPLE files_ram_table[MAX_FILE_NUMBER];
 extern int NUM_FILES_OP;
 
 void insert_tuple_file_ram_table(char* file_name, char* mode, int ram_file_address, int file_size);
+void delete_tuple_ram_table(int file_id);
 void print_ram_table();
