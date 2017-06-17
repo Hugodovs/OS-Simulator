@@ -65,8 +65,8 @@ int main (void){
     //printf("\nFileOut: %s\n", fileOut);
     //read_fromDisk("file2.txt", fileOut);
 	//printf("\nFileOut: %s\n", fileOut);
-
-    open_file("file1.txt", "w");
+    //get_next_Instruction();
+    /*open_file("file1.txt", "w");
     open_file("file2.txt", "r");
     write_on_file("file2.txt", "namoralvsf");
     printf("size : %d\n", files_ram_table[1].file_size);
@@ -74,12 +74,15 @@ int main (void){
     close_file("file2.txt");
 
     delete_file("file2.txt");
-    print_inode_table();
+    print_inode_table();*/
     //write_on_file("file1.txt", "joao");
     //write_on_file("file1.txt", "mateus");
     //close_file("file1.txt");
-    print_disk();
-    print_ram();
+    while(1) {get_next_Instruction();
+      print_disk();
+      print_ram();
+      
+    }
     //update_screen();
     //while(1);
     // Print (after Copy)
