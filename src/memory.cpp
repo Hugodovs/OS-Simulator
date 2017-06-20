@@ -43,10 +43,10 @@ int write_onDisk(char *file, char *fileName) {
         insert_tuple_inode_table(fd, disk_address, strlen(file));
         insert_tuple_direct_table(fd, fileName);
 
-        update_log_buffer("Disk Controller: logic address -> inode number.");
+        /*update_log_buffer("Disk Controller: logic address -> inode number.");
         update_screen();
         update_log_buffer("Inode Table inserted Inode number by Controladora.");
-        update_screen();
+        update_screen();*/
         return 1;
     }
 }
@@ -72,26 +72,27 @@ int check_free_disk(int size) {
 
 int read_fromDisk(char *requestedfile, char requestedfile_content[100]) {
 
-    update_log_buffer("Attempting to locate requestedfile id on the directory_table");
+    update_log_buffer("Attempting to locate file...");
     update_screen();
 
     int id_reqfile = find_file_id(requestedfile);
     if(id_reqfile==-1) {
         
-        update_log_buffer("Failed to located requestedfile id on the directory_table");
+        update_log_buffer("Failed to located file in the Directory_Table");
         update_screen();
         update_log_buffer("File not found in HD.");
         update_screen();
-        update_log_buffer("Creating a new file in HD.");
+        update_log_buffer("Let's create it!");
+        update_screen();
+        update_log_buffer("Creating...");
         update_screen();
 
         write_onDisk("-", requestedfile);
         requestedfile_content[0] = '-';
         requestedfile_content[1] = '\0';
-        return -1;
      } else{
 
-        sprintf(str, "Found requestedfile id (%d) on the directory_table", id_reqfile);
+        sprintf(str, "File (%d) exists!", id_reqfile);
         update_log_buffer(str);
         update_screen();
 
@@ -99,22 +100,43 @@ int read_fromDisk(char *requestedfile, char requestedfile_content[100]) {
 
     int file_address_and_size[2];
 
-    sprintf(str, "Attempting to get address size from the id (%d)", id_reqfile);
+    sprintf(str, "Now the file exists!", id_reqfile);
+    update_log_buffer(str);
+    update_screen();
+
+    sprintf(str, "Disk Controller receives inode");
+    update_log_buffer(str);
+    update_screen();
+
+    sprintf(str, "Disk Controller checks Directory_Table");
+    update_log_buffer(str);
+    update_screen();
+
+    sprintf(str, "Disk Controller checks Inode_Table");
+    update_log_buffer(str);
+    update_screen();
+
+    sprintf(str, "- setting file.txt size and physical address");
+    update_log_buffer(str);
+    update_screen();
+
+    sprintf(str, "Disk Controller requests DMA Controller");
+    update_log_buffer(str);
+    update_screen();
+
+    sprintf(str, "DMA controller accesses RAM memory");
+    update_log_buffer(str);
+    update_screen();
+
+    sprintf(str, "file.txt in RAM");
     update_log_buffer(str);
     update_screen();
 
     get_address_size_from_id(id_reqfile, file_address_and_size);
 
-    sprintf(str, "Found address size from the id (%d)", id_reqfile);
-    update_log_buffer(str);
-    update_screen();
-
     for (int i = 0; i < file_address_and_size[1]; i++) {
         requestedfile_content[i] = secondary_mem[file_address_and_size[0]+i];
     }
-
-    update_log_buffer("File content and address at the secondary_mem retrieved");
-    update_screen();
 
     requestedfile_content[file_address_and_size[1]] = '\0';
 
@@ -139,16 +161,16 @@ void open_file(char* file_name, char* mode){
     //DMA:
     //Vai no HD e pega o conteúdo desse arquivo:
 
-    sprintf(str, "Open file \"%s\" - Disk Controller", file_name);
+    sprintf(str, "Kernel parses \"%s\" to find the corresponding inode", file_name);
     update_log_buffer(str);
     update_screen();
 
     char file_content[50];
     int file_size = read_fromDisk(file_name, file_content);
 
-    sprintf(str, "file content: %s, tam: %d", file_content, strlen(file_content));
-    update_log_buffer(str);
-    update_screen();
+    //sprintf(str, "file content: %s, tam: %d", file_content, strlen(file_content));
+    //update_log_buffer(str);
+    //update_screen();
 
     //Vê se tem espaço na RAM pra colocar esse arquivo:
     //Se tiver, coloca o arquivo na ram
@@ -215,14 +237,14 @@ void close_file(char* file_name) {
 int write_on_ram(char* file_content) {
     //printf("Tentando escrever um arquivo na RAM!");
 
-    update_log_buffer("Locating free space at the RAM.");
-    update_screen();
+    /*update_log_buffer("Locating free space at the RAM.");
+    update_screen();*/
 
     int address_on_ram = check_free_ram(strlen(file_content));
     if (address_on_ram == -1) {
 
-        update_log_buffer("There isn't enough space at the RAM.");
-        update_screen();
+        /*update_log_buffer("There isn't enough space at the RAM.");
+        update_screen();*/
 
         return address_on_ram;
     }
@@ -230,10 +252,10 @@ int write_on_ram(char* file_content) {
         for (unsigned int i = 0; i < strlen(file_content); ++i) {
             primary_mem[i+address_on_ram] = file_content[i];
         }
-        update_log_buffer("Controladora do disco inseriu o conteúdo do arquivo na RAM diretamente(DMA).");
+        /*update_log_buffer("Controladora do disco inseriu o conteúdo do arquivo na RAM diretamente(DMA).");
         update_screen();
         update_log_buffer("File content copied to the RAM.");
-        update_screen();
+        update_screen();*/
 
         return address_on_ram;
     }

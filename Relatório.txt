@@ -112,3 +112,26 @@ Comandos do usuário
 	VERIFICAÇÃO DE ERRO DO WRITE:
 		- Não tem espaço na RAM
 		- Permissão de usuário
+
+
+
+open
+
+Processor requests Disk Controller
+- file.txt from HD to RAM
+Kernel parses file.txt to find the corresponding inode  
+The file exists! (goto (no): #)
+
+Disk Controller receives inode
+
+Disk Controller checks Directory_Table
+Disk Controller checks Inode_Table
+- setting file.txt size and physical address
+Disk Controller requests DMA Controller
+DMA controller accesses RAM memory
+file.txt in RAM
+
+#
+No file on Directory_Table
+Let's create it!
+Creating... (back to: )

@@ -10,9 +10,7 @@
 #include "../headers/descriptor_table.h"
 #include "../headers/ram_file_table.h"
 
-
-
-
+extern char str[100];
 
 void get_next_Instruction() {
 	char instruction[100];
@@ -132,6 +130,14 @@ char* strseparator(char** stringp, const char* delim) {
 }
 
 void execute_open_Operation (char *fileName) {
+	
+	update_log_buffer("Processor requests Disk Controller");
+    update_screen();
+
+    sprintf(str, "- \"%s\" from HD to RAM", fileName);
+    update_log_buffer(str);
+    update_screen();
+
 	open_file(fileName, "r");
 	//If there is anything else interesting to report...
 }
