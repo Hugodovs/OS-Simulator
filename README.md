@@ -90,9 +90,10 @@ Etapas envolvidas nesta operação:
 
 
 ##### read
-Esta operação é capaz de apagar um arquivo solicitado. Caso este arquivo não exista, uma mensagem de erro é impressa ao usuário. Um exemplo de uso do comando seria:
+Esta operação é capaz de ler os dados de um arquivo solicitado, juntamente com o tamanho. 
+
 ```
-read java.txt 
+read java.txt 5
 ```
 ##### write
 
