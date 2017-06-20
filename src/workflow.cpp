@@ -87,15 +87,13 @@ void get_next_Instruction() {
 			instruction_word = strseparator(&instruction_copy,delimiter);  // FileName
 			printf("The user would like to 'close' the following file (%s)\n", instruction_word);
 			execute_close_Operation(instruction_word);
-<<<<<<< HEAD
-=======
+
 		}
 
 		else if (strcmp(instruction_word, "delete")==0) {
 			instruction_word = strseparator(&instruction_copy,delimiter);  // FileName
 			printf("The user would like to 'close' the following file (%s)\n", instruction_word);
 			execute_delete_Operation(instruction_word);
->>>>>>> 4666b6f314e14b3e8e926e466d4ec4e516bc1fba
 		}
 
 		else if (strcmp(instruction_word, "delete")==0) {
