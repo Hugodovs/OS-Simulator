@@ -60,6 +60,8 @@ char file_table_path_buffer[100];
 char ram_memory_buffer[20];
 char hard_drive_buffer[40];
 char log_buffer[520]; //65 per line
+char name_file[10];
+int file_opened = 0;
 
 void restart_file_table_size_buffer(){
 	for(int i = 0; i < 10; i++){
@@ -139,12 +141,20 @@ void update_file_table_size_buffer(){
 	}
 }
 
-void update_file_table_address_buffer(){
-	for(int i = 0; i < MAX_FILE_NUMBER; i++){
-		file_table_size_buffer[i] = inode_table[i].address_file;
+void update_file_table_address_buffer(char* name, int back){
+	if (back == 1){
+		file_opened-=1;
 	}
+	file_opened+=1;
+
+	sprintf(file_table_size_buffer, "%s", name);
 
 	//Atualiza screen buffer
+	int k = file_opened*240 + 1469 - 120 ;
+	for(unsigned int i = 0; i < strlen(file_table_size_buffer); i++){
+		screen_buffer[k] = file_table_size_buffer[i];
+		k+=1;
+	}
 }
 
 void update_file_table_path_buffer(){
@@ -189,11 +199,11 @@ void update_hard_drive_buffer(){
 		screen_buffer[i] = hard_drive_buffer[k];
 		k+=1;
 	}
-	for(int i = 1417; i < 1417+120*10; i+=120){
+	for(int i = 1419; i < 1419+120*10; i+=120){
 		screen_buffer[i] = hard_drive_buffer[k];
 		k+=1;
 	}
-	for(int i = 1427; i < 1427+120*10; i+=120){
+	for(int i = 1429; i < 1429+120*10; i+=120){
 		screen_buffer[i] = hard_drive_buffer[k];
 		k+=1;
 	}

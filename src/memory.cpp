@@ -210,12 +210,6 @@ int check_free_ram(int size) {
 int write_on_file(char* file_name, char* input) {
   int file_id = find_file_id(file_name);
 
-  update_log_buffer("Escreve um conjunto de caracteres no endereço do arquivo na RAM.");
-  update_screen();
-  update_log_buffer("O processador vai na File_RAM_Table e pega o endereço do arquivo.");
-  update_screen();
-  update_log_buffer("Tendo o endereço, ele escreve a string a partir do file_pointer.");
-  update_screen();
   //printf("File ptr: %d", files_ram_table[file_id].file_ptr);
   for (unsigned int i = 0; i < strlen(input); i++) {
     primary_mem[files_ram_table[file_id].file_ptr] = input[i];
@@ -236,6 +230,26 @@ void close_file(char* file_name) {
   int file_hd_address_size[2];
   get_address_size_from_id(file_id, file_hd_address_size);
   int file_ram_size = files_ram_table[file_id].file_size;
+
+  if (file_ram_size > 0){
+    update_log_buffer("You need to open the file to close it :(");
+    update_screen();
+
+    return;
+  }
+  
+  update_log_buffer("CPU requests close operation of some file to Disk Controller");
+  update_screen();
+  update_log_buffer("Logical address is mapped into inode number");
+  update_screen();
+  update_log_buffer("Disk Controller copies file content from RAM to HD");
+  update_screen();
+  update_log_buffer("Disk Controller delete file from RAM");
+  update_screen();
+  update_log_buffer("CPU update File Table in RAM removing the file's tuple.");
+  update_screen();
+  update_file_table_address_buffer("         ", 1);
+  update_screen();
 
   int a = file_hd_address_size[0];
   int b = ram_file_address;

@@ -77,26 +77,26 @@ void get_next_Instruction() {
 		else if (strcmp(instruction_word, "read")==0) {
 			instruction_word = strseparator(&instruction_copy,delimiter);  // FileName
 			int size = atoi(strseparator(&instruction_copy,delimiter));
-			printf("The user would like to 'read' the file (%s), with size (%d)\n", instruction_word, size);
+			//printf("The user would like to 'read' the file (%s), with size (%d)\n", instruction_word, size);
 			execute_read_Operation(instruction_word, size);
 		}
 
 		else if (strcmp(instruction_word, "close")==0) {
 			instruction_word = strseparator(&instruction_copy,delimiter);  // FileName
-			printf("The user would like to 'close' the following file (%s)\n", instruction_word);
+			//printf("The user would like to 'close' the following file (%s)\n", instruction_word);
 			execute_close_Operation(instruction_word);
 
 		}
 
 		else if (strcmp(instruction_word, "delete")==0) {
 			instruction_word = strseparator(&instruction_copy,delimiter);  // FileName
-			printf("The user would like to 'close' the following file (%s)\n", instruction_word);
+			//printf("The user would like to 'close' the following file (%s)\n", instruction_word);
 			execute_delete_Operation(instruction_word);
 		}
 
 		else if (strcmp(instruction_word, "delete")==0) {
 			instruction_word = strseparator(&instruction_copy,delimiter);  // FileName
-			printf("The user would like to 'close' the following file (%s)\n", instruction_word);
+			//printf("The user would like to 'close' the following file (%s)\n", instruction_word);
 			execute_delete_Operation(instruction_word);
 		}
 
@@ -139,11 +139,30 @@ void execute_open_Operation (char *fileName) {
     update_screen();
 
 	open_file(fileName, "r");
+
+	update_file_table_address_buffer(fileName, 0);
+	update_screen();
 	//If there is anything else interesting to report...
 }
 
 void execute_write_Operation (char *fileName, char *newdata) {
 	write_on_file(fileName, newdata);
+
+  	update_log_buffer("CPU finds file address in File Table in RAM");
+  	update_screen();
+  	update_log_buffer("Content is copied into File RAM Address.");
+  	update_screen();
+  	update_log_buffer("File Table in RAM is updated with the current file pointer.");
+  	update_screen();
+  	update_log_buffer("File Table in RAM is updated with the current file size.");
+  	update_screen();
+
+  	update_ram_memory_buffer();
+    update_screen();
+
+    update_hard_drive_buffer();
+    update_screen();
+
 	//If there is anything else interesting to report...
 }
 
@@ -154,6 +173,15 @@ void execute_read_Operation (char *fileName, int size) {
 
 void execute_close_Operation (char *fileName) {
 	close_file(fileName);
+
+  	update_ram_memory_buffer();
+    update_screen();
+
+    update_hard_drive_buffer();
+    update_screen();
+
+
+
 	//If there is anything else interesting to report...
 }
 
