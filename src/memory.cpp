@@ -77,7 +77,7 @@ int read_fromDisk(char *requestedfile, char requestedfile_content[100]) {
 
     int id_reqfile = find_file_id(requestedfile);
     if(id_reqfile==-1) {
-        
+
         update_log_buffer("Failed to located requestedfile id on the directory_table");
         update_screen();
         update_log_buffer("File not found in HD.");
@@ -178,6 +178,13 @@ int check_free_ram(int size) {
 
 int write_on_file(char* file_name, char* input) {
   int file_id = find_file_id(file_name);
+
+  update_log_buffer("Escreve um conjunto de caracteres no endereço do arquivo na RAM.");
+  update_screen();
+  update_log_buffer("O processador vai na File_RAM_Table e pega o endereço do arquivo.");
+  update_screen();
+  update_log_buffer("Tendo o endereço, ele escreve a string a partir do file_pointer.");
+  update_screen();
   //printf("File ptr: %d", files_ram_table[file_id].file_ptr);
   for (unsigned int i = 0; i < strlen(input); i++) {
     primary_mem[files_ram_table[file_id].file_ptr] = input[i];
