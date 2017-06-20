@@ -18,19 +18,19 @@ Estruturas que estão no HD:
 				   |		|
 				   +--------+
 
-Estruturas que estão na RAM:
+* Access_Matrix: +--------+-------+-------+-------+
+				 | users  |	file1 |	file2 |	file3 |		
+				 |		  |		  |		  |		  |
+				 +--------+-------+-------+-------+
 
-* Virtual_Directory_Table: 	+---------------------------------------+--------------+
-							| endereço lógico (string - "file.txt") | Inode number |
-							|										|			   |
-							+---------------------------------------+--------------+
+Estruturas que estão na RAM:
 
 * File_RAM_Table: 
 
-  +--------------+------------+---------+--------------+------+------------+
-  | Inode number | RAM adress | tamanho | file pointer | mode | permission |
-  |				 |			  |			|              |	  |			   |
-  +--------------+------------+---------+--------------+------+------------+
+  +---------------------------------------+--------------+------------+---------+--------------+------+------------+
+  | endereço lógico (string - "file.txt") | Inode number | RAM adress | tamanho | file pointer | mode | permission |
+  |										  |				 |			  |			|              |	  |			   |
+  +---------------------------------------+--------------+------------+---------+--------------+------+------------+
 
 * RAM_Table:
 
@@ -44,31 +44,71 @@ Operações que o processador faz para a  controladora_DMA (usando DMA):
 
 Comandos do usuário
 
+	login "usuario":
+
+	show "table_name"
+
+	Requisição:
+
 	open ("file.txt"):
-		Faz uma requisição passando nome do arquivo para a  controladora_DMA passar o arquivo no HD para a RAM.
-		Controladora_DMA recebe uma requisição para abrir com o endereço lógico "file.txt"
+		Faz uma requisição passando nome do arquivo para a  controladora_do_disco passar o arquivo no HD para a RAM.
+		Controladora_DMA recebe uma requisição para abrir com o endereço lógico "file.txt" 
 		Ela manda para o controlador do disco, mapear.
-		O controlador do disco, transforma o "file.txt" usando o Directory_Table.
-		Tendo o Inumber, o controlador do disco usa o Inode_Table para pegar o endereço físico e o tamanho.
-		Com o endereço físico, o controlador do disco pega o conteúdo e passa para a  controladora_DMA.
-		A  controladora_DMA passa pra RAM.
-		Finalmente temos o arquivo na RAM.
+		Se ele não encontrar o arquivo, ele cria um de tamanha 1.
+		O controlador do disco, transforma o "file.txt" usando o Directory_Table em um InodeNumber.
+		Tendo o Inodenumber, o controlador do disco usa o Inode_Table para pegar o endereço físico e o tamanho.
+		Com o endereço físico, o controlador do disco pega o conteúdo (Disk_file_Table) e passa para a  controladora_DMA.
+		A controladora_DMA passa pra RAM .
+		Finalmente temos o arquivo na RAM (File_RAM_Table atualizada).
+
+	VERIFICAÇÃO DE ERRO DO OPEN:
+		- Não tem espaço na RAM... Foge do escopo do trabalho
+		- Permissão de usuário 
 
 	delete ("file.txt"):
-		Faz uma requisição passando nome do arquivo para a  controladora_DMA remover o arquivo do HD.
-		controladora_DMA recebe uma requisição para abrir com o endereço lógico "file.txt"
-		O controlador do disco, transforma o "file.txt" usando o Directory_Table.
-		Tendo o Inumber, o controlador do disco usa o Inode_Table para pegar o endereço físico e o tamanho.
-		Com o endereço físico, o controlador do disco pega o conteúdo e passa para a  controladora_DMA.
-		O controlador do Disco apaga o conteúdo do arquivo, e os "entrys".
+		Faz uma requisição passando nome do arquivo para o controlador_do_disco remover o arquivo do HD.
+		O controlador_do_disco recebe uma requisição para acessar com o endereço lógico "file.txt"
+		O controlador_do_disco, transforma o "file.txt" usando o Directory_Table em um InodeNumber.
+		Tendo o Inodenumber, o controlador_do_disco usa o Inode_Table para pegar o endereço físico e o tamanho.
+		Com o endereço físico, o controlador_do_disco apaga o conteúdo e os dados do arquivo de cada estrutura.
+		Com o disco apagado, ele avisa ao processador.
 		Finalmente temos o aquivo fora do HD.
 
-	read ("file.txt") size
-		Pega o conteúdo do arquivo na ram e, printa.
+	VERIFICAÇÃO DE ERRO DO DELETE:
+		- Não tem o arquivo no HD
+		- Não está fechado o arquivo
+		- Permissão de usuário
+
 
 	close ("file.txt")
-		Faz uma requisição para a  controladora_DMA tirar o arquivo da RAM.
+		Faz uma requisição para a controladora_DMA com o conteúdo da RAM para ela atualizar o HD e remover o arquivo da RAM.
+		Controladora_DMA recebe uma requisição para acessar o endereço lógico "file.txt"
+		Ela manda para o controlador do disco, mapear.
+		O controlador do disco, transforma o "file.txt" usando o Directory_Table em um InodeNumber.
+		Tendo o Inodenumber, o controlador do disco usa o Inode_Table para pegar o endereço físico.
+		Com o novo tamanho do arquivo, eu checo e vejo se o arquivo irá caber naquele endereço físico. Se não couber, ERRO.
+		Eu escrevo o conteúdo que foi passado e atualizo o tamanho do arquivo na Inode_Table.
+		Finalmente temos o arquivo atualizado no HD (File_RAM_Table atualizada).
 
-	write "string" in int(address):
-		Escreve um conjunto de caracteres no endereço e vai seguindo
+	VERIFICAÇÃO DE ERRO DO DELETE:
+		- Não tem espaço para escrever no HD
+		- Permissão de usuário
 
+	read ("file.txt") size
+		Pega o conteúdo do arquivo na RAM e, printar.
+		O processador vai na File_RAM_Table e pega o endereço do arquivo.
+		Tendo o endereço, ele acessa o conteúdo.
+		Ele printa o conteúdo.
+
+	VERIFICAÇÃO DE ERRO DO READ:
+		- O arquivo tem que estar aberto
+		- Permissão de usuário
+
+	write "string" in file_name:
+		Escreve um conjunto de caracteres no endereço do arquivo na RAM.
+		O processador vai na File_RAM_Table e pega o endereço do arquivo.
+		Tendo o endereço, ele escreve a string a partir do file_pointer.
+
+	VERIFICAÇÃO DE ERRO DO WRITE:
+		- Não tem espaço na RAM
+		- Permissão de usuário
