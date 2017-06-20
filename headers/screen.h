@@ -1,4 +1,6 @@
 #define SCREEN_SIZE 4800
+#define DISK_CAPACITY 40
+#define RAM_CAPACITY 20
 
 extern char primary_mem[RAM_CAPACITY];
 extern char secondary_mem[DISK_CAPACITY];

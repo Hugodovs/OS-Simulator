@@ -123,7 +123,7 @@ void update_screen(){
 	setbuf(stdout, NULL);
 
 	printf("%s", screen_buffer);
-	sleep(1);
+	//sleep(1);
 }
 
 void update_file_table_size_buffer(){
@@ -189,7 +189,7 @@ void update_hard_drive_buffer(){
 
 
 void update_log_buffer(char* new_line){
-	
+	sleep(1);
 	for(int i = 0; i < 65; i++){
 		log_buffer[i] = log_buffer[i+65];
 	}
@@ -221,7 +221,7 @@ void update_log_buffer(char* new_line){
 	//New string:
 	//Reset:
 	for(int i = 65*7; i < 65*8; i++){
-		log_buffer[i] = '-';
+		log_buffer[i] = ' ';
 	}
 
 	int j = 0;

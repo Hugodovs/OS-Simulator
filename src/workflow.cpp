@@ -22,7 +22,7 @@ void get_next_Instruction() {
 
 	fgets(instruction, 100, stdin);
 	if (instruction[0]=='\n') {
-			printf("Uh oh... it looks like you did not use our I/O simulator properly =(\n");
+		update_log_buffer("Uh oh... it looks like you did not use our I/O simulator properly =(\n");
 	}
 	else {
 		char *instruction_word = (char *) malloc (101*sizeof(char));
@@ -33,9 +33,13 @@ void get_next_Instruction() {
 			// Will read some file
 			instruction_word = strseparator(&instruction_copy,delimiter);
 			if (instruction_word==NULL || strcmp(" ",instruction_word)==0)
-				printf("Uh oh... it looks like you did not use our I/O simulator properly =(\n");
+				update_log_buffer("Uh oh... it looks like you did not use our I/O simulator properly =(\n");
 			else {
-				printf("The user would like to 'open' the file (%s)\n", instruction_word);
+				char str[100];
+				sprintf(str, "The user would like to 'open' the file (%s)", instruction_word);
+				update_log_buffer(str);
+				update_screen();
+
 				execute_open_Operation(instruction_word);
 			}
 
@@ -67,8 +71,8 @@ void get_next_Instruction() {
 					break;
 				}
 			}
-			write_on_file(instruction_words_line[k+1], data);
-			//printf("The user would like to 'write' the following data (%s) to the address (%d)\n", data, destination_address);
+			execute_write_Operation(instruction_words_line[k+1], data);
+			
 
 		}
 
@@ -76,24 +80,24 @@ void get_next_Instruction() {
 			instruction_word = strseparator(&instruction_copy,delimiter);  // FileName
 			int size = atoi(strseparator(&instruction_copy,delimiter));
 			printf("The user would like to 'read' the file (%s), with size (%d)\n", instruction_word, size);
-			read_from_file(instruction_word, size);
+			execute_read_Operation(instruction_word, size);
 		}
 
 		else if (strcmp(instruction_word, "close")==0) {
 			instruction_word = strseparator(&instruction_copy,delimiter);  // FileName
 			printf("The user would like to 'close' the following file (%s)\n", instruction_word);
-			close_file(instruction_word);
+			execute_close_Operation(instruction_word);
+		}
+
+		else if (strcmp(instruction_word, "delete")==0) {
+			instruction_word = strseparator(&instruction_copy,delimiter);  // FileName
+			printf("The user would like to 'close' the following file (%s)\n", instruction_word);
+			execute_delete_Operation(instruction_word);
 		}
 
 		else {
-			printf("Uh oh... it looks like you did not use our I/O simulator properly =(\n");
+			update_log_buffer("Uh oh... it looks like you did not use our I/O simulator properly =(\n");
 		}
-
-		/*puts("oi antes do free");
-		free(instruction_word);
-		puts("depois antes primeiro do free");
-		free(instruction_copy);
-		puts("depois antes do free");*/
 	}
 
 
@@ -125,17 +129,23 @@ void execute_open_Operation (char *fileName) {
 	//If there is anything else interesting to report...
 }
 
-void execute_write_Operation (char *fileName) {
-	//(fileName);
+void execute_write_Operation (char *fileName, char *newdata) {
+	write_on_file(fileName, newdata);
 	//If there is anything else interesting to report...
 }
 
-void execute_read_Operation (char *fileName) {
-	//open_file(fileName);
+void execute_read_Operation (char *fileName, int size) {
+	read_from_file(fileName, size);
 	//If there is anything else interesting to report...
 }
 
 void execute_close_Operation (char *fileName) {
-	//open_file(fileName);
+	close_file(fileName);
+	//If there is anything else interesting to report...
+}
+
+void execute_delete_Operation (char *fileName) {
+	//delete_file();
+	
 	//If there is anything else interesting to report...
 }

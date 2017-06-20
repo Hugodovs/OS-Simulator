@@ -1,3 +1,4 @@
+#include "../headers/screen.h"
 #include "../headers/memory.h"
 #include "../headers/descriptor_table.h"
 #include "../headers/directory_table.h"
@@ -6,12 +7,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+#define DISK_CAPACITY 40
+#define RAM_CAPACITY 20
 
 char secondary_mem[DISK_CAPACITY];
 char primary_mem[RAM_CAPACITY];
 
-
+char str[100];
 
 
 void init_disk(){
@@ -40,8 +42,11 @@ int write_onDisk(char *file, char *fileName) {
         int fd = generate_fd(); //cria um filedescriptor para o file
         insert_tuple_inode_table(fd, disk_address, strlen(file));
         insert_tuple_direct_table(fd, fileName);
-        printf("Controladora do disco transformou endereço lógico em um inode number.\n");
-        printf("Inode number inserido na tabela de inodes pela Controladora.\n");
+
+        update_log_buffer("Disk Controller: logic address -> inode number.");
+        update_screen();
+        update_log_buffer("Inode Table inserted Inode number by Controladora.");
+        update_screen();
         return 1;
     }
 }
@@ -66,28 +71,51 @@ int check_free_disk(int size) {
 
 
 int read_fromDisk(char *requestedfile, char requestedfile_content[100]) {
-    printf("Attempting to locate requestedfile id on the directory_table\n");
+
+    update_log_buffer("Attempting to locate requestedfile id on the directory_table");
+    update_screen();
+
     int id_reqfile = find_file_id(requestedfile);
     if(id_reqfile==-1) {
-        printf("Failed to located requestedfile id on the directory_table\n");
-        printf("Arquivo não localizado no HD. Criando um novo arquivo no HD.\n");
+        
+        update_log_buffer("Failed to located requestedfile id on the directory_table");
+        update_screen();
+        update_log_buffer("File not found in HD.");
+        update_screen();
+        update_log_buffer("Creating a new file in HD.");
+        update_screen();
+
         write_onDisk("-", requestedfile);
         requestedfile_content[0] = '-';
         requestedfile_content[1] = '\0';
         return -1;
-     } else
-        printf("Found requestedfile id (%d) on the directory_table\n", id_reqfile);
+     } else{
+
+        sprintf(str, "Found requestedfile id (%d) on the directory_table", id_reqfile);
+        update_log_buffer(str);
+        update_screen();
+
+     }
 
     int file_address_and_size[2];
 
-    printf("Attempting to get address size from the id (%d)\n", id_reqfile);
+    sprintf(str, "Attempting to get address size from the id (%d)", id_reqfile);
+    update_log_buffer(str);
+    update_screen();
+
     get_address_size_from_id(id_reqfile, file_address_and_size);
-    printf("Found address size from the id (%d)\n", id_reqfile);
+
+    sprintf(str, "Found address size from the id (%d)", id_reqfile);
+    update_log_buffer(str);
+    update_screen();
 
     for (int i = 0; i < file_address_and_size[1]; i++) {
         requestedfile_content[i] = secondary_mem[file_address_and_size[0]+i];
     }
-    printf("File content and address at the secondary_mem retrieved\n");
+
+    update_log_buffer("File content and address at the secondary_mem retrieved");
+    update_screen();
+
     requestedfile_content[file_address_and_size[1]] = '\0';
 
     return file_address_and_size[1];
@@ -111,11 +139,16 @@ void open_file(char* file_name, char* mode){
     //DMA:
     //Vai no HD e pega o conteúdo desse arquivo:
 
-    printf("Requisição de abertura do arquivo %s para a controladora do disco iniciada.\n", file_name);
+    sprintf(str, "Open file \"%s\" - Disk Controller", file_name);
+    update_log_buffer(str);
+    update_screen();
+
     char file_content[50];
     int file_size = read_fromDisk(file_name, file_content);
-    printf("file content: %s, tam: %d\n", file_content, strlen(file_content));
 
+    sprintf(str, "file content: %s, tam: %d", file_content, strlen(file_content));
+    update_log_buffer(str);
+    update_screen();
 
     //Vê se tem espaço na RAM pra colocar esse arquivo:
     //Se tiver, coloca o arquivo na ram
@@ -145,7 +178,7 @@ int check_free_ram(int size) {
 
 int write_on_file(char* file_name, char* input) {
   int file_id = find_file_id(file_name);
-  //printf("File ptr: %d\n", files_ram_table[file_id].file_ptr);
+  //printf("File ptr: %d", files_ram_table[file_id].file_ptr);
   for (unsigned int i = 0; i < strlen(input); i++) {
     primary_mem[files_ram_table[file_id].file_ptr] = input[i];
     files_ram_table[file_id].file_ptr++;
@@ -180,20 +213,28 @@ void close_file(char* file_name) {
 }
 
 int write_on_ram(char* file_content) {
-    //printf("Tentando escrever um arquivo na RAM!\n\n\n");
+    //printf("Tentando escrever um arquivo na RAM!");
 
-    printf("Locating free space at the RAM.\n");
+    update_log_buffer("Locating free space at the RAM.");
+    update_screen();
+
     int address_on_ram = check_free_ram(strlen(file_content));
     if (address_on_ram == -1) {
-        printf("There isn't enough space at the RAM.\n");
+
+        update_log_buffer("There isn't enough space at the RAM.");
+        update_screen();
+
         return address_on_ram;
     }
     else {
         for (unsigned int i = 0; i < strlen(file_content); ++i) {
             primary_mem[i+address_on_ram] = file_content[i];
         }
-        printf("Controladora do disco inseriu o conteúdo do arquivo na RAM diretamente(DMA).\n");
-        printf("File content copied to the RAM.\n");
+        update_log_buffer("Controladora do disco inseriu o conteúdo do arquivo na RAM diretamente(DMA).");
+        update_screen();
+        update_log_buffer("File content copied to the RAM.");
+        update_screen();
+
         return address_on_ram;
     }
     //printf("ERROR in write_on_ram");
@@ -203,19 +244,19 @@ void read_from_file(char* requestedfile, int num_bytes) {
   int file_id = find_file_id(requestedfile);
   int ram_file_address = files_ram_table[file_id].ram_file_address;
   for (int i = ram_file_address; i < ram_file_address + num_bytes; i++) {
-    printf("Lendo byte no endereço: %d...\n", i);
+    printf("Lendo byte no endereço: %d...", i);
   }
 }
 
 void delete_file(char* file_name) {
   int file_id = find_file_id(file_name);
   if (file_id == -1) {
-    printf("Não foi possível deletar o arquivo %s. Arquivo não encontrado\n.", file_name);
+    printf("Não foi possível deletar o arquivo %s. Arquivo não encontrado.", file_name);
     return;
   }
   int file_size = files_ram_table[file_id].file_size;
   if (file_size > 0) {//arquivo ta aberto!
-    printf("Não foi possível deletar o arquivo %s. Tente fechar o arquivo primeiro.\n", file_name);
+    printf("Não foi possível deletar o arquivo %s. Tente fechar o arquivo primeiro.", file_name);
     return;
   } else {
     int hd_file_address = inode_table[file_id].address_file;
@@ -229,13 +270,13 @@ void delete_file(char* file_name) {
 }
 
 void print_disk() {
-  puts("\n---------DISK STATUS-------\n");
+  puts("---------DISK STATUS-------");
   for (int i = 0; i < DISK_CAPACITY; i++)
     printf("[%c] ", secondary_mem[i]);
 }
 
 void print_ram() {
-  puts("\n---------RAM STATUS-------\n");
+  puts("---------RAM STATUS-------");
   for (int i = 0; i < RAM_CAPACITY; i++)
     printf("[%c] ", primary_mem[i]);
 }

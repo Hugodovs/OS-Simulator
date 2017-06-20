@@ -8,10 +8,10 @@
 #include "headers/ram_file_table.h"
 #include "headers/workflow.h"
 
-#define clear() printf("\033[H\033[J")
 #define gotoxy(x,y) printf("\033[%d;%dH", (x), (y))
 
 int main (void){
+	
 	// Init Enviroment
     init_screen();
     init_disk();
