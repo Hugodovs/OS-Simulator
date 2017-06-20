@@ -77,13 +77,10 @@ int read_fromDisk(char *requestedfile, char requestedfile_content[100]) {
 
     int id_reqfile = find_file_id(requestedfile);
     if(id_reqfile==-1) {
-<<<<<<< HEAD
         
         update_log_buffer("Failed to located file in the Directory_Table");
-=======
 
         update_log_buffer("Failed to located requestedfile id on the directory_table");
->>>>>>> b24706e0519976c1e1af07ceff0ab7fffbf5584c
         update_screen();
         update_log_buffer("File not found in HD.");
         update_screen();
@@ -95,6 +92,7 @@ int read_fromDisk(char *requestedfile, char requestedfile_content[100]) {
         write_onDisk("-", requestedfile);
         requestedfile_content[0] = '-';
         requestedfile_content[1] = '\0';
+        return -1;
      } else{
 
         sprintf(str, "File (%d) exists!", id_reqfile);
@@ -105,7 +103,7 @@ int read_fromDisk(char *requestedfile, char requestedfile_content[100]) {
 
     int file_address_and_size[2];
 
-    sprintf(str, "Now the file exists!", id_reqfile);
+    sprintf(str, "Now the file exists!");
     update_log_buffer(str);
     update_screen();
 
@@ -183,6 +181,12 @@ void open_file(char* file_name, char* mode){
 
 
     insert_tuple_file_ram_table(file_name, mode, ram_file_address, file_size);
+
+    update_ram_memory_buffer();
+    update_screen();
+
+    update_hard_drive_buffer();
+    update_screen();
 
 }
 

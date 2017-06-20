@@ -23,16 +23,16 @@ char screen_buffer[4801] =  "+==================================================
 							"|                                         |                         |                                                  |"
 							"|           FILE RAM TABLE                |       RAM MEMORY        |            HARD DRIVE MEMORY                     |"
 							"|                                         |                         |                                                  |"
-							"|  SIZE        ADDRESS         PATH       | 0: > [   ]  10: > [   ] |   0: [   ]  10: [   ]  20: [   ]  30 [   ]       |"
+							"|  SIZE        ADDRESS         PATH       | 0:   [   ]  10:   [   ] |   0: [   ]  10: [   ]  20: [   ]  30 [   ]       |"
 							"| +===+        +====+      +============+ | 1:   [   ]  11:   [   ] |   1: [   ]  11: [   ]  21: [   ]  31 [   ]       |"
 							"| |   |        |    |      |            | | 2:   [   ]  12:   [   ] |   2: [   ]  12: [   ]  22: [   ]  32 [   ]       |"
 							"| +===+        +====+      +============+ | 3:   [   ]  13:   [   ] |   3: [   ]  13: [   ]  23: [   ]  33 [   ]       |"
-							"| |   |        |    |      |            | | 4:   [   ]  14: > [   ] |   4: [   ]  14: [   ]  24: [   ]  34 [   ]       |"
+							"| |   |        |    |      |            | | 4:   [   ]  14:   [   ] |   4: [   ]  14: [   ]  24: [   ]  34 [   ]       |"
 							"| +===+        +====+      +============+ | 5:   [   ]  15:   [   ] |   5: [   ]  15: [   ]  25: [   ]  35 [   ]       |"
 							"| |   |        |    |      |            | | 6:   [   ]  16:   [   ] |   6: [   ]  16: [   ]  26: [   ]  36 [   ]       |"
 							"| +===+        +====+      +============+ | 7:   [   ]  17:   [   ] |   7: [   ]  17: [   ]  27: [   ]  37 [   ]       |"
 							"| |   |        |    |      |            | | 8:   [   ]  18:   [   ] |   8: [   ]  18: [   ]  28: [   ]  38 [   ]       |"
-							"| +===+        +====+      +============+ | 9:   [   ]  19: > [   ] |   9: [   ]  19: [   ]  29: [   ]  39 [   ]       |"
+							"| +===+        +====+      +============+ | 9:   [   ]  19:   [   ] |   9: [   ]  19: [   ]  29: [   ]  39 [   ]       |"
 							"| |   |        |    |      |            | |                         |                                                  |"
 							"| +===+        +====+      +============+ +=========================+==================================================+"
 							"| |   |        |    |      |            | |                                                                            |"
@@ -158,18 +158,47 @@ void update_file_table_path_buffer(){
 }
 
 void update_ram_memory_buffer(){
+	sleep(1);
 	for (int i = 0; i <  RAM_CAPACITY; i++) {
 		ram_memory_buffer[i] = primary_mem[i];
 	}
-
 	//Atualiza screen buffer
+	int k = 0;
+	for(int i = 1372; i < 1372+120*10; i+=120){
+		screen_buffer[i] = ram_memory_buffer[k];
+		k+=1;
+	}
+	for(int i = 1385; i < 1385+120*10; i+=120){
+		screen_buffer[i] = ram_memory_buffer[k];
+		k+=1;
+	}
 }
 
 void update_hard_drive_buffer(){
+	sleep(1);
 	for (int i = 0; i <  DISK_CAPACITY; i++) {
 		hard_drive_buffer[i] = secondary_mem[i];
 	}
-	
+	//Atualiza screen buffer
+	int k = 0;
+	for(int i = 1398; i < 1398+120*10; i+=120){
+		screen_buffer[i] = hard_drive_buffer[k];
+		k+=1;
+	}
+	for(int i = 1407; i < 1407+120*10; i+=120){
+		screen_buffer[i] = hard_drive_buffer[k];
+		k+=1;
+	}
+	for(int i = 1417; i < 1417+120*10; i+=120){
+		screen_buffer[i] = hard_drive_buffer[k];
+		k+=1;
+	}
+	for(int i = 1427; i < 1427+120*10; i+=120){
+		screen_buffer[i] = hard_drive_buffer[k];
+		k+=1;
+	}
+
+
 	//Atualiza screen buffer
 }
 

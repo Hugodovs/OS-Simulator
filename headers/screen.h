@@ -16,3 +16,5 @@ void init_screen();
 void update_screen();
 void update_log_buffer(char* log_line);
 void update_file_table_id_buffer();
+void update_ram_memory_buffer();
+void update_hard_drive_buffer();
